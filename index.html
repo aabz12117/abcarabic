@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدرسة الحروف - تعلم الحروف العربية</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- زر تبديل الوضع الليلي -->
+    <button class="theme-toggle" id="theme-toggle" title="تبديل الوضع الليلي">
+        🌙
+    </button>
+    
+    <div class="container">
+        <!-- الصفحة الرئيسية -->
+        <div id="home-page" class="page active">
+            <header>
+                <h1>🌟 مرحبًا بك في مدرسة الحروف! 🌟</h1>
+                <p>تعلم الحروف العربية بطريقة ممتعة وتفاعلية</p>
+                <div class="header-controls">
+                    <button id="stats-btn" class="stats-btn">
+                        📊 الإحصائيات
+                    </button>
+                </div>
+            </header>
+            
+            <div class="menu-buttons">
+                <button class="menu-btn" onclick="showPage('letters-page')">
+                    📚 تعلم الحروف
+                </button>
+                <button class="menu-btn" onclick="showPage('writing-page')">
+                    ✍️ تدرب على الكتابة
+                </button>
+                <button class="menu-btn" onclick="showPage('reading-page')">
+                    📖 اقرأ وتعلم كلمات
+                </button>
+                <button class="menu-btn" onclick="showPage('quiz-page')">
+                    🧠 اختبر نفسك
+                </button>
+            </div>
+        </div>
+
+        <!-- صفحة تعلم الحروف -->
+        <div id="letters-page" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home-page')">🏠 الرئيسية</button>
+                <h2>📚 تعلم الحروف العربية</h2>
+            </div>
+            
+            <div class="letters-grid" id="letters-grid">
+                <!-- سيتم إضافة الحروف هنا بواسطة JavaScript -->
+            </div>
+            
+            <div class="letter-display" id="letter-display">
+                <div class="letter-card">
+                    <div class="big-letter" id="big-letter">اختر حرفًا</div>
+                    <div class="letter-word" id="letter-word">👆 اضغط على أي حرف</div>
+                    <div class="letter-emoji" id="letter-emoji">😊</div>
+                    <button class="play-sound-btn" id="play-sound-btn" onclick="playLetterSound()" disabled>
+                        🔊 استمع للحرف
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الكتابة -->
+        <div id="writing-page" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home-page')">🏠 الرئيسية</button>
+                <h2>✍️ تدرب على الكتابة</h2>
+            </div>
+            
+            <div class="writing-section">
+                <div class="letter-selector">
+                    <label>اختر حرفًا للتدرب عليه:</label>
+                    <select id="writing-letter-select" onchange="setupWritingPractice()">
+                        <option value="">اختر حرفًا</option>
+                    </select>
+                </div>
+                
+                <div class="canvas-container">
+                    <canvas id="writing-canvas" width="400" height="300"></canvas>
+                    <div class="canvas-controls">
+                        <button onclick="clearCanvas()">🗑️ امسح</button>
+                        <button onclick="showLetterGuide()">👁️ أظهر الدليل</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة القراءة -->
+        <div id="reading-page" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home-page')">🏠 الرئيسية</button>
+                <h2>📖 تعلم القراءة</h2>
+            </div>
+            
+            <div class="reading-section">
+                <div class="word-display">
+                    <div class="current-word" id="current-word">كلمة</div>
+                    <div class="word-letters" id="word-letters"></div>
+                    <div class="word-emoji" id="word-emoji">📝</div>
+                </div>
+                
+                <div class="reading-controls">
+                    <button onclick="previousWord()">⬅️ السابق</button>
+                    <button onclick="playWordSound()">🔊 استمع للكلمة</button>
+                    <button onclick="playLettersSound()">🔤 استمع للحروف</button>
+                    <button onclick="nextWord()">➡️ التالي</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة الاختبار -->
+        <div id="quiz-page" class="page">
+            <div class="page-header">
+                <button class="back-btn" onclick="showPage('home-page')">🏠 الرئيسية</button>
+                <h2>🧠 اختبر نفسك</h2>
+            </div>
+            
+            <div class="quiz-section">
+                <div class="score-display">
+                    <span>النقاط: <span id="score">0</span></span>
+                </div>
+                
+                <div class="question-card">
+                    <div class="question" id="question">أي حرف يبدأ به كلمة "أسد"؟</div>
+                    <div class="question-emoji" id="question-emoji">🦁</div>
+                    
+                    <div class="options" id="options">
+                        <!-- سيتم إضافة الخيارات هنا بواسطة JavaScript -->
+                    </div>
+                    
+                    <button class="next-question-btn" id="next-question-btn" onclick="nextQuestion()" style="display: none;">
+                        السؤال التالي ➡️
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- عناصر الصوت -->
+    <audio id="letter-audio" preload="none"></audio>
+    <audio id="word-audio" preload="none"></audio>
+    <audio id="success-audio" preload="none"></audio>
+    <audio id="error-audio" preload="none"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
